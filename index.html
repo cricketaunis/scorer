@@ -111,7 +111,8 @@
     <button class="b toggle" id="foBtn" onclick="toggleFinalOver()">Final over: OFF</button>
   </div>
   <div class="row">
-    <button class="b innings" onclick="endInnings()">End innings / start 2nd</button>
+    <button class="b innings" onclick="endInnings()">End 1st innings → chase</button>
+    <button class="b wkt" onclick="endMatch()">End match</button>
   </div>
 
   <details>
@@ -188,7 +189,7 @@ const view = params.get('view')==='overlay'?'overlay':params.get('view')==='watc
 let room = params.get('room') || 'match1';
 
 const blank = () => ({
-  battingTeam:'Team A', bowlingTeam:'Team B', innings:1, target:0, firstInnings:null,
+  battingTeam:'Team A', bowlingTeam:'Team B', innings:1, over:false, target:0, firstInnings:null,
   runs:0,wkts:0,overs:0,balls:0, extras:{nb:0,wd:0,b:0,lb:0}, overRuns:0,
   finalOver:false, cfg:{nb:2,wd:2,bpo:6},
   striker:'Batter 1', nonstriker:'Batter 2', bowler:'Bowler',
@@ -209,20 +210,20 @@ function tok(t){ if(!S.thisOver) S.thisOver=[]; S.thisOver.push(t); }
 function legalBall(){ const bw=eBowl(S.bowler); S.balls++; bw.balls++;
   if(S.balls>=S.cfg.bpo){ if(S.overRuns===0) bw.maidens++; S.overRuns=0; S.overs++; S.balls=0; swapSilent(); S.clearOver=true; pendingBowler=true; } }
 
-function offBat(r){ sv(); freshOver(); const b=eBat(S.striker); b.runs+=r; b.balls++; if(r===4)b.fours++; if(r===6)b.sixes++;
+function offBat(r){ if(S.over) return; sv(); freshOver(); const b=eBat(S.striker); b.runs+=r; b.balls++; if(r===4)b.fours++; if(r===6)b.sixes++;
   S.runs+=r; const bw=eBowl(S.bowler); bw.runs+=r; S.overRuns+=r; tok(r===0?'•':String(r)); legalBall(); if(r%2===1) swapSilent(); commit(); }
-function wide(){ sv(); freshOver(); const x=+(prompt('Extra runs run on the wide?','0')||0); const a=S.cfg.wd+x; S.runs+=a; S.extras.wd+=a; eBowl(S.bowler).runs+=a; S.overRuns+=a; tok('wd'+(x?('+'+x):'')); if(!S.finalOver) legalBall(); commit(); }
-function noBall(){ sv(); freshOver(); const o=+(prompt('Runs off the bat on the no-ball?','0')||0); S.runs+=S.cfg.nb; S.extras.nb+=S.cfg.nb; const bw=eBowl(S.bowler); bw.runs+=S.cfg.nb; S.overRuns+=S.cfg.nb; if(o>0){ const b=eBat(S.striker); b.runs+=o; if(o===4)b.fours++; if(o===6)b.sixes++; S.runs+=o; bw.runs+=o; S.overRuns+=o; if(o%2===1) swapSilent(); } tok('nb'+(o?('+'+o):'')); if(!S.finalOver) legalBall(); commit(); }
-function bye(){ sv(); freshOver(); const n=+(prompt('Byes?','1')||1); S.runs+=n; S.extras.b+=n; eBat(S.striker).balls++; tok(n+'b'); legalBall(); if(n%2===1) swapSilent(); commit(); }
-function legBye(){ sv(); freshOver(); const n=+(prompt('Leg byes?','1')||1); S.runs+=n; S.extras.lb+=n; eBat(S.striker).balls++; tok(n+'lb'); legalBall(); if(n%2===1) swapSilent(); commit(); }
-function wicket(){ sv(); freshOver(); const how=(prompt('How out?  e.g.  b Smith / c Blundell b O\'Rourke / lbw b Smith / run out','b '+S.bowler)||'out').trim();
+function wide(){ if(S.over) return; sv(); freshOver(); const x=+(prompt('Extra runs run on the wide?','0')||0); const a=S.cfg.wd+x; S.runs+=a; S.extras.wd+=a; eBowl(S.bowler).runs+=a; S.overRuns+=a; tok('wd'+(x?('+'+x):'')); if(!S.finalOver) legalBall(); commit(); }
+function noBall(){ if(S.over) return; sv(); freshOver(); const o=+(prompt('Runs off the bat on the no-ball?','0')||0); S.runs+=S.cfg.nb; S.extras.nb+=S.cfg.nb; const bw=eBowl(S.bowler); bw.runs+=S.cfg.nb; S.overRuns+=S.cfg.nb; if(o>0){ const b=eBat(S.striker); b.runs+=o; if(o===4)b.fours++; if(o===6)b.sixes++; S.runs+=o; bw.runs+=o; S.overRuns+=o; if(o%2===1) swapSilent(); } tok('nb'+(o?('+'+o):'')); if(!S.finalOver) legalBall(); commit(); }
+function bye(){ if(S.over) return; sv(); freshOver(); const n=+(prompt('Byes?','1')||1); S.runs+=n; S.extras.b+=n; eBat(S.striker).balls++; tok(n+'b'); legalBall(); if(n%2===1) swapSilent(); commit(); }
+function legBye(){ if(S.over) return; sv(); freshOver(); const n=+(prompt('Leg byes?','1')||1); S.runs+=n; S.extras.lb+=n; eBat(S.striker).balls++; tok(n+'lb'); legalBall(); if(n%2===1) swapSilent(); commit(); }
+function wicket(){ if(S.over) return; sv(); freshOver(); const how=(prompt('How out?  e.g.  b Smith / c Blundell b O\'Rourke / lbw b Smith / run out','b '+S.bowler)||'out').trim();
   const bowlerWkt=!/run\s*out|retired|obstruct|timed/i.test(how); S.wkts++; const sb=eBat(S.striker); sb.balls++; sb.out=true; sb.how=how;
   const bw=eBowl(S.bowler); if(bowlerWkt) bw.wkts++; tok('W'); legalBall();
   const nb=(prompt('New batter name:','')||'').trim(); if(nb){ S.striker=nb; eBat(nb); } commit(); }
-function retire(){ sv(); const sb=eBat(S.striker); sb.out=false; sb.how='retired not out'; const nb=(prompt('Retired '+S.striker+'. New batter:','')||'').trim(); if(nb){ S.striker=nb; eBat(nb); } commit(); }
-function newBowler(){ sv(); const nb=(prompt('Bowler name:',S.bowler)||'').trim(); if(nb){ S.bowler=nb; eBowl(nb); } commit(); }
+function retire(){ if(S.over) return; sv(); const sb=eBat(S.striker); sb.out=false; sb.how='retired not out'; const nb=(prompt('Retired '+S.striker+'. New batter:','')||'').trim(); if(nb){ S.striker=nb; eBat(nb); } commit(); }
+function newBowler(){ if(S.over) return; sv(); const nb=(prompt('Bowler name:',S.bowler)||'').trim(); if(nb){ S.bowler=nb; eBowl(nb); } commit(); }
 function askBowler(){ sv(); const nb=prompt('Over complete ('+S.cfg.bpo+' balls). New bowler?\n\nCancel = keep '+S.bowler+' (then use Edit/fix if it was a miscount).',''); if(nb&&nb.trim()){ S.bowler=nb.trim(); eBowl(S.bowler); commit(); } else { hist.pop(); } }
-function swapStrike(){ sv(); swapSilent(); commit(); }
+function swapStrike(){ if(S.over) return; sv(); swapSilent(); commit(); }
 function undo(){ if(hist.length){ S=JSON.parse(hist.pop()); commit(); } }
 function toggleFinalOver(){ sv(); S.finalOver=!S.finalOver; commit(); }
 function adj(field,d){ sv();
@@ -232,12 +233,26 @@ function adj(field,d){ sv();
   else if(field==='balls') S.balls=Math.max(0,Math.min(S.cfg.bpo,S.balls+d));
   else if(field==='bowlerBalls'){ const b=eBowl(S.bowler); b.balls=Math.max(0,b.balls+d); }
   commit(); }
-function endInnings(){ if(!confirm('End this innings and start the chase?')) return; sv();
-  S.firstInnings={team:S.battingTeam, runs:S.runs, wkts:S.wkts, overs:S.overs, balls:S.balls};
+
+function endInnings(){
+  if(S.over){ alert('Match already ended. Reset match to start a new game.'); return; }
+  if(S.innings>=2){ alert('Already in the 2nd innings — you only do the changeover once.'); return; }
+  if(!confirm('End the 1st innings and start the chase?')) return; sv();
+  S.firstInnings={ team:S.battingTeam, vs:S.bowlingTeam, runs:S.runs, wkts:S.wkts, overs:S.overs, balls:S.balls,
+    extras:JSON.parse(JSON.stringify(S.extras)),
+    bat:JSON.parse(JSON.stringify(S.bat)), bowl:JSON.parse(JSON.stringify(S.bowl)),
+    batOrder:[...S.batOrder], bowlOrder:[...S.bowlOrder], striker:S.striker, nonstriker:S.nonstriker };
   S.target=S.runs+1; const bt=S.battingTeam; S.battingTeam=S.bowlingTeam; S.bowlingTeam=bt;
   S.innings=2; S.runs=0; S.wkts=0; S.overs=0; S.balls=0; S.extras={nb:0,wd:0,b:0,lb:0}; S.overRuns=0;
   S.striker='Batter 1'; S.nonstriker='Batter 2'; S.bowler='Bowler';
   S.bat={}; S.bowl={}; S.batOrder=[]; S.bowlOrder=[]; S.thisOver=[]; S.clearOver=false; commit(); }
+
+function endMatch(){
+  if(S.over){ alert('Match already ended.'); return; }
+  if(!confirm('End the match? This locks the scorecard so you can save the final result.')) return;
+  sv(); S.over=true; commit();
+  alert('Match ended. Open the Watch link and hit “Save scorecard”, then Reset when ready for the next game.'); }
+
 function setNames(){ S.battingTeam=battingTeam.value; S.bowlingTeam=bowlingTeam.value; S.striker=striker.value; S.nonstriker=nonstriker.value; S.bowler=bowler.value; S.target=+target.value||0; eBat(S.striker); eBat(S.nonstriker); eBowl(S.bowler); commit(); }
 function setCfg(){ S.cfg.nb=+nb.value; S.cfg.wd=+wd.value; S.cfg.bpo=+bpo.value||6; commit(); }
 function resetMatch(){ if(confirm('Reset the whole match?')){ const c=S.cfg; S=blank(); S.cfg=c; hist=[]; commit(); } }
@@ -261,7 +276,7 @@ function bowlRows(){ let r=''; (S.bowlOrder||[]).forEach(n=>{ const b=S.bowl[n];
 
 function render(){
   if(view==='control' && document.getElementById('bigScore')){
-    matchline.textContent=S.battingTeam+' v '+S.bowlingTeam+(S.innings===2?'  ·  2nd innings':'');
+    matchline.textContent=S.battingTeam+' v '+S.bowlingTeam+(S.over?'  ·  MATCH ENDED':(S.innings===2?'  ·  2nd innings':''));
     bigScore.textContent=S.runs+'/'+S.wkts;
     bigSub.textContent=ovr()+' overs · extras '+totExtras()+(S.target>0?' · need '+Math.max(0,S.target-S.runs):'');
     const sb=S.bat[S.striker]||{runs:0}; const flag=sb.runs>=30?'  ⚠ RETIRE (30)':'';
@@ -276,7 +291,9 @@ function render(){
     wVs.textContent=(S.battingTeam+' v '+S.bowlingTeam).toUpperCase();
     wBteam.textContent=S.battingTeam.toUpperCase();
     wScore.innerHTML=S.runs+'/'+S.wkts+'<small>('+ovr()+' ov · RR '+rr()+')</small>';
-    if(S.target>0){ const need=Math.max(0,S.target-S.runs); wNeed.textContent= need>0?(S.battingTeam+' need '+need+' to win'):(S.battingTeam+' won'); } else wNeed.textContent='';
+    if(S.over){ wNeed.textContent = S.target>0 ? (S.runs>=S.target ? (S.battingTeam+' won') : (S.bowlingTeam+' won by '+((S.target-1)-S.runs)+' runs')) : 'Match ended'; }
+    else if(S.target>0){ const need=Math.max(0,S.target-S.runs); wNeed.textContent= need>0?(S.battingTeam+' need '+need+' to win'):(S.battingTeam+' won'); }
+    else wNeed.textContent='';
     w1st.textContent=S.firstInnings?(S.firstInnings.team+' '+S.firstInnings.runs+'/'+S.firstInnings.wkts+' ('+S.firstInnings.overs+'.'+S.firstInnings.balls+' ov) · target '+S.target):'';
     wBat.innerHTML=batRows();
     wOver.innerHTML=(S.thisOver&&S.thisOver.length)?S.thisOver.map(t=>'<span class="'+ballClass(t)+'">'+t+'</span>').join(''):'<span class="ball">–</span>';
@@ -294,20 +311,38 @@ function render(){
 }
 
 function downloadCard(){
-  const html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+S.battingTeam+' v '+S.bowlingTeam+'</title>'+
+  function block(d,label){
+    const tot=d.extras.nb+d.extras.wd+d.extras.b+d.extras.lb;
+    const exStr=d.extras.nb+'nb '+d.extras.wd+'w '+d.extras.b+'b '+d.extras.lb+'lb';
+    const ovrTxt=d.overs+'.'+d.balls;
+    let order=[...(d.batOrder||[])]; [d.striker,d.nonstriker].forEach(n=>{ if(n&&order.indexOf(n)<0) order.push(n); });
+    let br=''; order.forEach(n=>{ const b=d.bat[n]; if(!b) return;
+      const how=b.out?b.how:((n===d.striker||n===d.nonstriker)?'not out':(b.how||'not out'));
+      br+='<tr><td>'+n+' <span class="how">'+how+'</span></td><td class="num">'+b.runs+'</td><td class="num">'+b.balls+'</td><td class="num">'+(b.fours||0)+'</td><td class="num">'+(b.sixes||0)+'</td></tr>'; });
+    br+='<tr><td>Extras <span class="how">'+exStr+'</span></td><td class="num">'+tot+'</td><td></td><td></td><td></td></tr>';
+    br+='<tr><td><b>Total</b></td><td class="num"><b>'+d.runs+'/'+d.wkts+'</b> ('+ovrTxt+' ov)</td><td></td><td></td><td></td></tr>';
+    let wr=''; (d.bowlOrder||[]).forEach(n=>{ const b=d.bowl[n]; if(!b||b.balls===0) return;
+      const bp=S.cfg.bpo||6; wr+='<tr><td>'+n+'</td><td class="num">'+Math.floor(b.balls/bp)+'.'+(b.balls%bp)+'</td><td class="num">'+(b.maidens||0)+'</td><td class="num">'+b.runs+'</td><td class="num">'+b.wkts+'</td></tr>'; });
+    return '<h2>'+label+' — '+d.runs+'/'+d.wkts+' ('+ovrTxt+' ov)</h2>'+
+      '<table><thead><tr><th>Batter</th><th class="num">R</th><th class="num">B</th><th class="num">4s</th><th class="num">6s</th></tr></thead><tbody>'+br+'</tbody></table>'+
+      '<table><thead><tr><th>Bowler</th><th class="num">O</th><th class="num">M</th><th class="num">R</th><th class="num">W</th></tr></thead><tbody>'+(wr||'<tr><td>—</td><td></td><td></td><td></td><td></td></tr>')+'</tbody></table>';
+  }
+  const cur={ team:S.battingTeam, runs:S.runs, wkts:S.wkts, overs:S.overs, balls:S.balls, extras:S.extras,
+    bat:S.bat, bowl:S.bowl, batOrder:S.batOrder, bowlOrder:S.bowlOrder, striker:S.striker, nonstriker:S.nonstriker };
+  let inner='';
+  if(S.firstInnings){ inner+=block(S.firstInnings,S.firstInnings.team+' — 1st Innings'); inner+=block(cur,S.battingTeam+' — 2nd Innings'); }
+  else { inner+=block(cur,S.battingTeam+' — Innings'); }
+  const title=(S.firstInnings?S.firstInnings.team:S.battingTeam)+' v '+(S.firstInnings?S.firstInnings.vs:S.bowlingTeam);
+  let result=''; if(S.over&&S.target>0){ result = S.runs>=S.target ? (S.battingTeam+' won') : (S.bowlingTeam+' won by '+((S.target-1)-S.runs)+' runs'); }
+  const html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+title+'</title>'+
     '<style>body{font-family:system-ui,Arial,sans-serif;max-width:640px;margin:20px auto;padding:0 16px;color:#16181d;}'+
-    'h1{font-size:22px;}h2{font-size:17px;margin-top:22px;border-bottom:2px solid #0a7d2c;padding-bottom:4px;}'+
-    'table{width:100%;border-collapse:collapse;margin-top:8px;font-size:14px;}th{text-align:left;font-size:11px;text-transform:uppercase;color:#666;padding:6px;}'+
-    'td{padding:7px 6px;border-top:1px solid #ddd;}td.num,th.num{text-align:right;}.how{color:#888;font-size:.85em;}</style></head><body>'+
-    '<h1>'+S.battingTeam+' v '+S.bowlingTeam+'</h1>'+
-    (S.firstInnings?'<p>'+S.firstInnings.team+' '+S.firstInnings.runs+'/'+S.firstInnings.wkts+' ('+S.firstInnings.overs+'.'+S.firstInnings.balls+' ov) · target '+S.target+'</p>':'')+
-    '<h2>'+S.battingTeam+' '+(S.innings===2?'2nd':'1st')+' Innings — '+S.runs+'/'+S.wkts+' ('+ovr()+' ov)</h2>'+
-    '<table><thead><tr><th>Batter</th><th class="num">R</th><th class="num">B</th><th class="num">4s</th><th class="num">6s</th></tr></thead><tbody>'+batRows()+'</tbody></table>'+
-    '<h2>Bowling</h2><table><thead><tr><th>Bowler</th><th class="num">O</th><th class="num">M</th><th class="num">R</th><th class="num">W</th></tr></thead><tbody>'+bowlRows()+'</tbody></table>'+
-    '<p style="margin-top:20px;color:#999;font-size:12px;">Saved '+new Date().toLocaleString()+'</p></body></html>';
-  const blob=new Blob([html],{type:'text/html'});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-  a.download=(S.battingTeam+'_v_'+S.bowlingTeam+'_scorecard.html').replace(/\s+/g,'_'); a.click();
+    'h1{font-size:22px;}h2{font-size:16px;margin-top:24px;border-bottom:2px solid #0a7d2c;padding-bottom:4px;}'+
+    'table{width:100%;border-collapse:collapse;margin-top:6px;font-size:14px;}th{text-align:left;font-size:11px;text-transform:uppercase;color:#666;padding:6px;}'+
+    'th.num,td.num{text-align:right;}td{padding:7px 6px;border-top:1px solid #ddd;}.how{color:#888;font-size:.85em;}</style></head><body>'+
+    '<h1>'+title+'</h1>'+(result?'<p><b>'+result+'</b></p>':'')+inner+
+    '<p style="margin-top:24px;color:#999;font-size:12px;">Saved '+new Date().toLocaleString()+'</p></body></html>';
+  const blob=new Blob([html],{type:'text/html'}); const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download=title.replace(/\s+/g,'_')+'_full_scorecard.html'; a.click();
 }
 
 let listener=null;
