@@ -12,26 +12,58 @@
   body{margin:0;background:var(--bg);color:var(--text);}
 
   /* CONTROL */
-  .panel{max-width:520px;margin:0 auto;padding:14px;}
+  .panel{max-width:540px;margin:0 auto;padding:14px;}
   .top{display:flex;justify-content:space-between;align-items:center;gap:8px;}
   h1{font-size:15px;margin:0;opacity:.8;}
   #conn{font-size:11px;padding:3px 8px;border-radius:20px;background:#444;}
   #conn.ok{background:var(--accent);}
+  .matchline{font-size:13px;opacity:.7;margin:2px 0 6px;}
   .score-big{font-size:40px;font-weight:800;}
   .sub{opacity:.8;font-size:14px;margin-bottom:6px;}
-  .who{font-size:13px;opacity:.85;margin-bottom:12px;line-height:1.5;}
+  .who{font-size:13px;opacity:.85;margin-bottom:10px;line-height:1.5;}
+  .ovr-strip{font-size:13px;opacity:.8;margin-bottom:12px;letter-spacing:1px;}
+  .ovr-strip b{color:#ffd23f;}
   .row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:7px;}
-  button.b{flex:1;min-width:56px;padding:16px 6px;font-size:17px;font-weight:700;border:none;border-radius:11px;background:var(--panel);color:#fff;cursor:pointer;}
+  button.b{flex:1;min-width:54px;padding:16px 6px;font-size:17px;font-weight:700;border:none;border-radius:11px;background:var(--panel);color:#fff;cursor:pointer;}
   button.b:active{transform:scale(.96);}
   .run{background:#243a6b;} .extra{background:#5a3d12;} .wkt{background:#7a1f1f;} .util{background:#333a4d;font-size:14px;}
+  .innings{background:#3a2a5a;}
   fieldset{border:1px solid #2a3147;border-radius:11px;margin:12px 0;padding:11px;}
   legend{padding:0 6px;opacity:.8;font-size:13px;}
   label{font-size:13px;display:flex;align-items:center;gap:6px;margin:5px 0;justify-content:space-between;}
   input{background:#0d1018;color:#fff;border:1px solid #2a3147;border-radius:6px;padding:7px 8px;width:64px;text-align:center;}
-  input.txt{width:150px;text-align:left;}
+  input.txt{width:160px;text-align:left;}
   .toggle{background:#333a4d;} .toggle.on{background:var(--accent);}
+  details{border:1px solid #2a3147;border-radius:11px;margin:12px 0;padding:6px 11px;}
+  summary{cursor:pointer;font-size:14px;padding:6px 0;opacity:.9;}
+  .fix{display:flex;justify-content:space-between;align-items:center;margin:7px 0;font-size:14px;}
+  .fix .ctl{display:flex;align-items:center;gap:10px;}
+  .fix button{width:38px;height:38px;border:none;border-radius:9px;background:#333a4d;color:#fff;font-size:20px;font-weight:700;cursor:pointer;}
+  .fix .val{min-width:42px;text-align:center;font-weight:700;}
 
-  /* OBS OVERLAY (kept, optional) */
+  /* WATCH — traditional scoreboard */
+  body.watch{background:radial-gradient(circle at 50% -10%,#16233f,#080b11);}
+  .watch{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 16px;}
+  .w-live{position:fixed;top:14px;right:16px;font-size:12px;font-weight:700;letter-spacing:1px;color:#ff5252;}
+  .w-live.ok{color:#39d353;}
+  .w-vs{font-size:clamp(14px,3.5vw,20px);letter-spacing:2px;opacity:.7;text-transform:uppercase;margin-top:8px;}
+  .w-card{width:100%;max-width:560px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:22px;margin-top:16px;}
+  .w-bteam{font-size:clamp(18px,4.5vw,26px);font-weight:700;letter-spacing:1px;}
+  .w-score{font-size:clamp(44px,13vw,86px);font-weight:900;line-height:1.05;}
+  .w-score small{font-size:clamp(16px,4vw,26px);font-weight:600;opacity:.7;margin-left:10px;}
+  .w-need{font-size:clamp(14px,3.5vw,19px);color:#ffd23f;font-weight:700;margin-top:6px;min-height:1.1em;}
+  .w-1st{font-size:clamp(12px,3vw,15px);opacity:.6;margin-top:4px;}
+  .w-tbl{width:100%;max-width:560px;margin-top:14px;border-collapse:collapse;font-size:clamp(14px,3.4vw,17px);}
+  .w-tbl th{text-align:left;font-size:11px;letter-spacing:1px;opacity:.5;font-weight:700;padding:6px 8px;}
+  .w-tbl td{padding:8px;border-top:1px solid rgba(255,255,255,.08);}
+  .w-tbl td.num{text-align:right;font-variant-numeric:tabular-nums;}
+  .star{color:#ffd23f;}
+  .w-over{width:100%;max-width:560px;margin-top:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .w-over .lbl{font-size:11px;letter-spacing:1px;opacity:.5;font-weight:700;}
+  .ball{min-width:30px;height:30px;padding:0 6px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;background:rgba(255,255,255,.08);}
+  .ball.w{background:#7a1f1f;} .ball.x{background:#5a3d12;} .ball.four{background:#1f5a3a;} .ball.six{background:#0a7d2c;}
+
+  /* OBS OVERLAY */
   body.overlay{background:transparent;}
   .ov{position:fixed;left:24px;right:24px;bottom:24px;display:flex;border-radius:10px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.5);font-size:22px;}
   .ov .team{background:var(--accent);padding:14px 20px;font-weight:800;display:flex;align-items:center;}
@@ -40,22 +72,6 @@
   .ov small{display:block;font-size:11px;opacity:.7;font-weight:700;letter-spacing:.5px;}
   .ov .bat{background:rgba(12,16,26,.8);padding:12px 16px;font-size:16px;font-weight:600;}
   .ov .bowl{background:rgba(12,16,26,.7);padding:12px 16px;font-size:16px;font-weight:600;}
-  .star{color:#ffd23f;}
-
-  /* WATCH (spectator full-screen, read-only) */
-  body.watch{background:radial-gradient(circle at 50% 0%,#16203a,#0a0d14);}
-  .watch{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;}
-  .w-live{position:fixed;top:16px;right:18px;font-size:12px;font-weight:700;letter-spacing:1px;color:#ff5252;}
-  .w-live.ok{color:#39d353;}
-  .w-team{font-size:clamp(20px,5vw,34px);font-weight:700;letter-spacing:2px;opacity:.85;text-transform:uppercase;}
-  .w-score{font-size:clamp(64px,20vw,150px);font-weight:900;line-height:1;margin:6px 0;}
-  .w-overs{font-size:clamp(16px,4vw,24px);opacity:.8;}
-  .w-extras{font-size:clamp(13px,3vw,18px);opacity:.6;margin-top:4px;}
-  .w-need{font-size:clamp(16px,4vw,26px);font-weight:700;color:#ffd23f;margin-top:14px;min-height:1.2em;}
-  .w-cards{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:28px;width:100%;max-width:640px;}
-  .w-card{flex:1;min-width:240px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;}
-  .w-card .lbl{font-size:12px;letter-spacing:1px;opacity:.55;font-weight:700;margin-bottom:8px;}
-  .w-card .line{font-size:clamp(15px,3.5vw,19px);font-weight:600;margin:4px 0;}
 </style>
 </head>
 <body>
@@ -63,9 +79,12 @@
 <!-- CONTROL -->
 <div class="panel" id="panel">
   <div class="top"><h1>Cricket Control</h1><span id="conn">connecting…</span></div>
+  <div class="matchline" id="matchline">Team A v Team B</div>
   <div class="score-big" id="bigScore">0/0</div>
   <div class="sub" id="bigSub">0.0 overs · extras 0</div>
   <div class="who" id="who"></div>
+  <div class="ovr-strip" id="ovrStrip">This over: —</div>
+
   <div class="row">
     <button class="b run" onclick="offBat(0)">0</button><button class="b run" onclick="offBat(1)">1</button>
     <button class="b run" onclick="offBat(2)">2</button><button class="b run" onclick="offBat(3)">3</button>
@@ -77,7 +96,7 @@
   </div>
   <div class="row">
     <button class="b wkt" onclick="wicket()">WICKET</button>
-    <button class="b util" onclick="swapStrike()">⇄ Swap strike</button>
+    <button class="b util" onclick="swapStrike()">⇄ Swap</button>
     <button class="b util" onclick="undo()">↶ Undo</button>
   </div>
   <div class="row">
@@ -85,11 +104,26 @@
     <button class="b util" onclick="retire()">Retire striker</button>
     <button class="b toggle" id="foBtn" onclick="toggleFinalOver()">Final over: OFF</button>
   </div>
-  <fieldset><legend>Players</legend>
+  <div class="row">
+    <button class="b innings" onclick="endInnings()">End innings / start 2nd</button>
+  </div>
+
+  <details>
+    <summary>✎ Edit / fix scores</summary>
+    <div class="fix"><span>Total runs</span><div class="ctl"><button onclick="adj('runs',-1)">−</button><span class="val" id="fRuns">0</span><button onclick="adj('runs',1)">＋</button></div></div>
+    <div class="fix"><span>Wickets</span><div class="ctl"><button onclick="adj('wkts',-1)">−</button><span class="val" id="fWkts">0</span><button onclick="adj('wkts',1)">＋</button></div></div>
+    <div class="fix"><span>Extras</span><div class="ctl"><button onclick="adj('extras',-1)">−</button><span class="val" id="fExtras">0</span><button onclick="adj('extras',1)">＋</button></div></div>
+    <div class="fix"><span>Overs completed</span><div class="ctl"><button onclick="adj('overs',-1)">−</button><span class="val" id="fOvers">0</span><button onclick="adj('overs',1)">＋</button></div></div>
+    <div class="fix"><span>Balls this over</span><div class="ctl"><button onclick="adj('balls',-1)">−</button><span class="val" id="fBalls">0</span><button onclick="adj('balls',1)">＋</button></div></div>
+    <div class="fix"><span id="fBowlerName">Bowler balls</span><div class="ctl"><button onclick="adj('bowlerBalls',-1)">−</button><span class="val" id="fBowlerBalls">0</span><button onclick="adj('bowlerBalls',1)">＋</button></div></div>
+  </details>
+
+  <fieldset><legend>Teams & players</legend>
+    <label>Batting team <input class="txt" id="battingTeam" onchange="setNames()"></label>
+    <label>Bowling team <input class="txt" id="bowlingTeam" onchange="setNames()"></label>
     <label>Striker <input class="txt" id="striker" onchange="setNames()"></label>
     <label>Non-striker <input class="txt" id="nonstriker" onchange="setNames()"></label>
     <label>Bowler <input class="txt" id="bowler" onchange="setNames()"></label>
-    <label>Batting team <input class="txt" id="team" onchange="setNames()"></label>
     <label>Target <input id="target" value="0" onchange="setNames()"></label>
   </fieldset>
   <fieldset><legend>Rules</legend>
@@ -99,7 +133,24 @@
     <label>Room code <input class="txt" id="room" value="match1" onchange="changeRoom()"></label>
   </fieldset>
   <button class="b util" style="width:100%" onclick="resetMatch()">Reset match</button>
-  <p style="opacity:.6;font-size:12px">Watch link: add <code>?view=watch&room=YOURCODE</code> to this page's address.</p>
+  <p style="opacity:.6;font-size:12px">Watch link: add <code>?view=watch&room=YOURCODE</code> · OBS: <code>?view=overlay&room=YOURCODE</code></p>
+</div>
+
+<!-- WATCH -->
+<div class="watch" id="watch" style="display:none">
+  <div class="w-live" id="wLive">● OFFLINE</div>
+  <div class="w-vs" id="wVs">TEAM A v TEAM B</div>
+  <div class="w-card">
+    <div class="w-bteam" id="wBteam">TEAM A</div>
+    <div class="w-score" id="wScore">0/0<small id="wOvers">(0.0 ov)</small></div>
+    <div class="w-need" id="wNeed"></div>
+    <div class="w-1st" id="w1st"></div>
+  </div>
+  <table class="w-tbl"><thead><tr><th>Batting</th><th class="num">R</th><th class="num">B</th></tr></thead>
+    <tbody id="wBat"></tbody></table>
+  <table class="w-tbl"><thead><tr><th>Bowling</th><th class="num">O</th><th class="num">R</th><th class="num">W</th></tr></thead>
+    <tbody id="wBowl"></tbody></table>
+  <div class="w-over"><span class="lbl">THIS OVER</span><span id="wOver"></span></div>
 </div>
 
 <!-- OBS OVERLAY -->
@@ -107,20 +158,6 @@
   <div class="team" id="ovTeam">TEAM</div>
   <div class="main"><span class="runs" id="ovRuns">0/0</span><span id="ovOvers"></span><span id="ovExtras"></span><span id="ovTarget"></span></div>
   <div class="bat" id="ovBat"></div><div class="bowl" id="ovBowl"></div>
-</div>
-
-<!-- WATCH -->
-<div class="watch" id="watch" style="display:none">
-  <div class="w-live" id="wLive">● OFFLINE</div>
-  <div class="w-team" id="wTeam">TEAM</div>
-  <div class="w-score" id="wScore">0/0</div>
-  <div class="w-overs" id="wOvers">0.0 overs</div>
-  <div class="w-extras" id="wExtras"></div>
-  <div class="w-need" id="wNeed"></div>
-  <div class="w-cards">
-    <div class="w-card"><div class="lbl">BATTING</div><div id="wBat"></div></div>
-    <div class="w-card"><div class="lbl">BOWLING</div><div id="wBowl"></div></div>
-  </div>
 </div>
 
 <script>
@@ -138,75 +175,120 @@ firebase.initializeApp(firebaseConfig);
 const fdb = firebase.database();
 
 const params = new URLSearchParams(location.search);
-const view = params.get('view') === 'overlay' ? 'overlay'
-           : params.get('view') === 'watch' ? 'watch' : 'control';
+const view = params.get('view')==='overlay'?'overlay':params.get('view')==='watch'?'watch':'control';
 let room = params.get('room') || 'match1';
 
-const blank = () => ({team:'TEAM',runs:0,wkts:0,overs:0,balls:0,extras:0,target:0,
-  finalOver:false,cfg:{nb:2,wd:2,bpo:6},striker:'Batter 1',nonstriker:'Batter 2',bowler:'Bowler',bat:{},bowl:{}});
-let S = blank(); let hist = [];
+const blank = () => ({
+  battingTeam:'Team A', bowlingTeam:'Team B', innings:1, target:0, firstInnings:null,
+  runs:0,wkts:0,overs:0,balls:0,extras:0, finalOver:false, cfg:{nb:2,wd:2,bpo:6},
+  striker:'Batter 1', nonstriker:'Batter 2', bowler:'Bowler', bat:{}, bowl:{},
+  thisOver:[], clearOver:false
+});
+let S = blank(); let hist = []; let pendingBowler = false;
 
 function ref(){ return fdb.ref('matches/'+room); }
 function eBat(n){ if(!S.bat[n]) S.bat[n]={runs:0,balls:0}; return S.bat[n]; }
 function eBowl(n){ if(!S.bowl[n]) S.bowl[n]={balls:0,runs:0,wkts:0}; return S.bowl[n]; }
-function sv(){ hist.push(JSON.stringify(S)); if(hist.length>40) hist.shift(); }
-function commit(){ ref().set(S); render(); }
+function sv(){ hist.push(JSON.stringify(S)); if(hist.length>50) hist.shift(); }
+function commit(){ ref().set(S); render(); if(view==='control' && pendingBowler){ pendingBowler=false; setTimeout(askBowler,60); } }
 function swapSilent(){ const t=S.striker; S.striker=S.nonstriker; S.nonstriker=t; }
-function legalBall(){ S.balls++; eBowl(S.bowler).balls++; if(S.balls>=S.cfg.bpo){ S.overs++; S.balls=0; swapSilent(); } }
+function freshOver(){ if(S.clearOver){ S.thisOver=[]; S.clearOver=false; } }
+function tok(t){ if(!S.thisOver) S.thisOver=[]; S.thisOver.push(t); }
+function legalBall(){ S.balls++; eBowl(S.bowler).balls++; if(S.balls>=S.cfg.bpo){ S.overs++; S.balls=0; swapSilent(); S.clearOver=true; pendingBowler=true; } }
 
-function offBat(r){ sv(); const b=eBat(S.striker); b.runs+=r; b.balls++; S.runs+=r; eBowl(S.bowler).runs+=r; legalBall(); if(r%2===1) swapSilent(); commit(); }
-function wide(){ sv(); const x=+(prompt('Extra runs run on the wide?','0')||0); const a=S.cfg.wd+x; S.runs+=a; S.extras+=a; eBowl(S.bowler).runs+=a; if(!S.finalOver) legalBall(); commit(); }
-function noBall(){ sv(); const o=+(prompt('Runs off the bat on the no-ball?','0')||0); S.runs+=S.cfg.nb; S.extras+=S.cfg.nb; eBowl(S.bowler).runs+=S.cfg.nb; if(o>0){ const b=eBat(S.striker); b.runs+=o; S.runs+=o; eBowl(S.bowler).runs+=o; if(o%2===1) swapSilent(); } if(!S.finalOver) legalBall(); commit(); }
-function bye(){ sv(); const n=+(prompt('Byes?','1')||1); S.runs+=n; S.extras+=n; eBat(S.striker).balls++; legalBall(); if(n%2===1) swapSilent(); commit(); }
-function legBye(){ sv(); const n=+(prompt('Leg byes?','1')||1); S.runs+=n; S.extras+=n; eBat(S.striker).balls++; legalBall(); if(n%2===1) swapSilent(); commit(); }
-function wicket(){ sv(); S.wkts++; eBat(S.striker).balls++; eBowl(S.bowler).wkts++; legalBall(); const nb=prompt('New batter name:','Batter '+(S.wkts+2)); if(nb){ S.striker=nb; eBat(nb); } commit(); }
+function offBat(r){ sv(); freshOver(); const b=eBat(S.striker); b.runs+=r; b.balls++; S.runs+=r; eBowl(S.bowler).runs+=r; tok(r===0?'•':String(r)); legalBall(); if(r%2===1) swapSilent(); commit(); }
+function wide(){ sv(); freshOver(); const x=+(prompt('Extra runs run on the wide?','0')||0); const a=S.cfg.wd+x; S.runs+=a; S.extras+=a; eBowl(S.bowler).runs+=a; tok('wd'+(x?('+'+x):'')); if(!S.finalOver) legalBall(); commit(); }
+function noBall(){ sv(); freshOver(); const o=+(prompt('Runs off the bat on the no-ball?','0')||0); S.runs+=S.cfg.nb; S.extras+=S.cfg.nb; eBowl(S.bowler).runs+=S.cfg.nb; if(o>0){ const b=eBat(S.striker); b.runs+=o; S.runs+=o; eBowl(S.bowler).runs+=o; if(o%2===1) swapSilent(); } tok('nb'+(o?('+'+o):'')); if(!S.finalOver) legalBall(); commit(); }
+function bye(){ sv(); freshOver(); const n=+(prompt('Byes?','1')||1); S.runs+=n; S.extras+=n; eBat(S.striker).balls++; tok(n+'b'); legalBall(); if(n%2===1) swapSilent(); commit(); }
+function legBye(){ sv(); freshOver(); const n=+(prompt('Leg byes?','1')||1); S.runs+=n; S.extras+=n; eBat(S.striker).balls++; tok(n+'lb'); legalBall(); if(n%2===1) swapSilent(); commit(); }
+function wicket(){ sv(); freshOver(); S.wkts++; eBat(S.striker).balls++; eBowl(S.bowler).wkts++; tok('W'); legalBall(); const nb=prompt('New batter name:','Batter '+(S.wkts+2)); if(nb){ S.striker=nb; eBat(nb); } commit(); }
 function retire(){ sv(); const nb=prompt('Retired. New batter name:',''); if(nb){ S.striker=nb; eBat(nb); } commit(); }
 function newBowler(){ sv(); const nb=prompt('Bowler name:',S.bowler); if(nb){ S.bowler=nb; eBowl(nb); } commit(); }
+function askBowler(){ sv(); const nb=prompt('Over complete ('+S.cfg.bpo+' balls). New bowler?\n\nCancel = keep '+S.bowler+' (then fix the ball count in Edit/fix if it was a miscount).',''); if(nb&&nb.trim()){ S.bowler=nb.trim(); eBowl(S.bowler); commit(); } else { hist.pop(); } }
 function swapStrike(){ sv(); swapSilent(); commit(); }
 function undo(){ if(hist.length){ S=JSON.parse(hist.pop()); commit(); } }
 function toggleFinalOver(){ sv(); S.finalOver=!S.finalOver; commit(); }
-function setNames(){ S.striker=striker.value; S.nonstriker=nonstriker.value; S.bowler=bowler.value; S.team=team.value; S.target=+target.value||0; eBat(S.striker); eBat(S.nonstriker); eBowl(S.bowler); commit(); }
+
+function adj(field,d){ sv();
+  if(field==='runs') S.runs=Math.max(0,S.runs+d);
+  else if(field==='wkts') S.wkts=Math.max(0,Math.min(10,S.wkts+d));
+  else if(field==='extras') S.extras=Math.max(0,S.extras+d);
+  else if(field==='overs') S.overs=Math.max(0,S.overs+d);
+  else if(field==='balls') S.balls=Math.max(0,Math.min(S.cfg.bpo,S.balls+d));
+  else if(field==='bowlerBalls'){ const b=eBowl(S.bowler); b.balls=Math.max(0,b.balls+d); }
+  commit();
+}
+
+function endInnings(){
+  if(!confirm('End this innings and start the chase?')) return;
+  sv();
+  S.firstInnings={team:S.battingTeam, runs:S.runs, wkts:S.wkts, overs:S.overs, balls:S.balls};
+  S.target=S.runs+1;
+  const bt=S.battingTeam; S.battingTeam=S.bowlingTeam; S.bowlingTeam=bt;
+  S.innings=2; S.runs=0; S.wkts=0; S.overs=0; S.balls=0; S.extras=0;
+  S.striker='Batter 1'; S.nonstriker='Batter 2'; S.bowler='Bowler';
+  S.bat={}; S.bowl={}; S.thisOver=[]; S.clearOver=false;
+  commit();
+}
+
+function setNames(){ S.battingTeam=battingTeam.value; S.bowlingTeam=bowlingTeam.value; S.striker=striker.value; S.nonstriker=nonstriker.value; S.bowler=bowler.value; S.target=+target.value||0; eBat(S.striker); eBat(S.nonstriker); eBowl(S.bowler); commit(); }
 function setCfg(){ S.cfg.nb=+nb.value; S.cfg.wd=+wd.value; S.cfg.bpo=+bpo.value||6; commit(); }
-function resetMatch(){ if(confirm('Reset match?')){ const c=S.cfg; S=blank(); S.cfg=c; hist=[]; commit(); } }
+function resetMatch(){ if(confirm('Reset the whole match?')){ const c=S.cfg; S=blank(); S.cfg=c; hist=[]; commit(); } }
 function changeRoom(){ room=document.getElementById('room').value||'match1'; hist=[]; subscribe(); }
 
 function ovr(){ return S.overs+'.'+S.balls; }
+function rr(){ const b=S.overs*S.cfg.bpo+S.balls; return b>0?(S.runs/(b/S.cfg.bpo)).toFixed(2):'0.00'; }
 function batLine(n,star){ const b=S.bat[n]||{runs:0,balls:0}; return (star?'<span class="star">★</span> ':'')+n+' '+b.runs+' ('+b.balls+')'; }
-function bowlLine(n){ const b=S.bowl[n]||{balls:0,runs:0,wkts:0}; const bp=S.cfg.bpo||6; return n+' '+Math.floor(b.balls/bp)+'.'+(b.balls%bp)+'-'+b.wkts+'-'+b.runs; }
+function bowlO(n){ const b=S.bowl[n]||{balls:0}; const bp=S.cfg.bpo||6; return Math.floor(b.balls/bp)+'.'+(b.balls%bp); }
+function ballClass(t){ if(t==='W')return'ball w'; if(t.indexOf('wd')===0||t.indexOf('nb')===0)return'ball x'; if(t==='4')return'ball four'; if(t==='6')return'ball six'; return'ball'; }
 
 function render(){
   if(view==='control' && document.getElementById('bigScore')){
+    matchline.textContent=S.battingTeam+' v '+S.bowlingTeam+(S.innings===2?'  ·  2nd innings':'');
     bigScore.textContent=S.runs+'/'+S.wkts;
     bigSub.textContent=ovr()+' overs · extras '+S.extras+(S.target>0?' · need '+Math.max(0,S.target-S.runs):'');
     const sb=S.bat[S.striker]||{runs:0}; const flag=sb.runs>=30?'  ⚠ RETIRE (30)':'';
-    who.innerHTML=batLine(S.striker,true)+flag+'<br>'+batLine(S.nonstriker,false)+'<br>Bowling: '+bowlLine(S.bowler);
+    who.innerHTML=batLine(S.striker,true)+flag+'<br>'+batLine(S.nonstriker,false)+'<br>Bowling: '+S.bowler+' '+bowlO(S.bowler)+'-'+(S.bowl[S.bowler]||{runs:0}).runs+'-'+(S.bowl[S.bowler]||{wkts:0}).wkts;
+    ovrStrip.innerHTML='This over: '+((S.thisOver&&S.thisOver.length)?S.thisOver.map(t=>'<b>'+t+'</b>').join(' '):'—');
     foBtn.textContent='Final over: '+(S.finalOver?'ON':'OFF'); foBtn.className='b toggle'+(S.finalOver?' on':'');
+    fRuns.textContent=S.runs; fWkts.textContent=S.wkts; fExtras.textContent=S.extras;
+    fOvers.textContent=S.overs; fBalls.textContent=S.balls;
+    fBowlerName.textContent=S.bowler+' balls'; fBowlerBalls.textContent=(S.bowl[S.bowler]||{balls:0}).balls;
+  }
+  if(view==='watch'){
+    wVs.textContent=(S.battingTeam+' v '+S.bowlingTeam).toUpperCase();
+    wBteam.textContent=S.battingTeam.toUpperCase();
+    wScore.innerHTML=S.runs+'/'+S.wkts+'<small>('+ovr()+' ov · RR '+rr()+')</small>';
+    if(S.target>0){ const need=Math.max(0,S.target-S.runs); wNeed.textContent= need>0?(S.battingTeam+' need '+need+' to win'):(S.battingTeam+' won'); }
+    else wNeed.textContent='';
+    w1st.textContent=S.firstInnings?(S.firstInnings.team+' '+S.firstInnings.runs+'/'+S.firstInnings.wkts+' ('+S.firstInnings.overs+'.'+S.firstInnings.balls+' ov) · target '+S.target):'';
+    wBat.innerHTML=
+      '<tr><td>'+(S.striker)+' <span class="star">★</span></td><td class="num">'+(S.bat[S.striker]||{runs:0}).runs+'</td><td class="num">'+(S.bat[S.striker]||{balls:0}).balls+'</td></tr>'+
+      '<tr><td>'+(S.nonstriker)+'</td><td class="num">'+(S.bat[S.nonstriker]||{runs:0}).runs+'</td><td class="num">'+(S.bat[S.nonstriker]||{balls:0}).balls+'</td></tr>';
+    const bw=S.bowl[S.bowler]||{runs:0,wkts:0};
+    wBowl.innerHTML='<tr><td>'+S.bowler+'</td><td class="num">'+bowlO(S.bowler)+'</td><td class="num">'+bw.runs+'</td><td class="num">'+bw.wkts+'</td></tr>';
+    wOver.innerHTML=(S.thisOver&&S.thisOver.length)?S.thisOver.map(t=>'<span class="'+ballClass(t)+'">'+t+'</span>').join(''):'<span class="ball">–</span>';
   }
   if(view==='overlay'){
-    ovTeam.textContent=S.team; ovRuns.textContent=S.runs+'/'+S.wkts;
+    ovTeam.textContent=S.battingTeam; ovRuns.textContent=S.runs+'/'+S.wkts;
     ovOvers.innerHTML='<small>OVERS</small>'+ovr(); ovExtras.innerHTML='<small>EXTRAS</small>'+S.extras;
     ovTarget.innerHTML=S.target>0?'<small>NEED</small>'+Math.max(0,S.target-S.runs):'';
     ovBat.innerHTML='<small>BATTING</small>'+batLine(S.striker,true)+'<br>'+batLine(S.nonstriker,false);
-    ovBowl.innerHTML='<small>BOWLING</small>'+bowlLine(S.bowler);
-  }
-  if(view==='watch'){
-    wTeam.textContent=S.team; wScore.textContent=S.runs+'/'+S.wkts; wOvers.textContent=ovr()+' overs';
-    wExtras.textContent='Extras '+S.extras;
-    wNeed.textContent=S.target>0?('Need '+Math.max(0,S.target-S.runs)+' to win'):'';
-    wBat.innerHTML='<div class="line">'+batLine(S.striker,true)+'</div><div class="line">'+batLine(S.nonstriker,false)+'</div>';
-    wBowl.innerHTML='<div class="line">'+bowlLine(S.bowler)+'</div>';
+    const bw=S.bowl[S.bowler]||{runs:0,wkts:0};
+    ovBowl.innerHTML='<small>BOWLING</small>'+S.bowler+' '+bowlO(S.bowler)+'-'+bw.runs+'-'+bw.wkts;
   }
 }
 
 let listener=null;
 function subscribe(){
   if(listener) ref().off('value',listener);
-  listener=ref().on('value',s=>{ const v=s.val(); if(v){ S=Object.assign(blank(),v); S.bat=v.bat||{}; S.bowl=v.bowl||{}; } hydrate(); render(); });
+  listener=ref().on('value',s=>{ const v=s.val(); if(v){ S=Object.assign(blank(),v); S.bat=v.bat||{}; S.bowl=v.bowl||{}; S.thisOver=v.thisOver||[]; } hydrate(); render(); });
 }
 function hydrate(){
   if(view!=='control') return;
+  battingTeam.value=S.battingTeam; bowlingTeam.value=S.bowlingTeam;
   striker.value=S.striker; nonstriker.value=S.nonstriker; bowler.value=S.bowler;
-  team.value=S.team; target.value=S.target; nb.value=S.cfg.nb; wd.value=S.cfg.wd; bpo.value=S.cfg.bpo;
+  target.value=S.target; nb.value=S.cfg.nb; wd.value=S.cfg.wd; bpo.value=S.cfg.bpo;
   document.getElementById('room').value=room;
 }
 fdb.ref('.info/connected').on('value',s=>{
